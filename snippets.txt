@@ -1,0 +1,18 @@
+reviews: list[dict] = [
+      {
+          "id": 1,
+          "name": "John Smith",
+          "rating": 5,
+          "title": "Hiking",
+          "comment": "The trail was beautiful and the scenery was amazing!",
+          "date_reviewed": "April 20, 2025",
+     },
+      {
+          "id": 2,
+          "name": "Jane Doe",
+          "rating": 4,
+          "title": "Kayaking",
+          "comment": "It was a lot of fun and very relaxing. The water was beautiful.",
+          "date_reviewed": "April 21, 2025",
+      },
+  ]
