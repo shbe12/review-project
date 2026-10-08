@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background: rounded square in the site's theme color -->
+  <rect width="512" height="512" rx="112" fill="#527c9f"/>
+  <!-- Speech bubble (a review = someone speaking up) -->
+  <rect x="96" y="112" width="320" height="232" rx="56" fill="#ffffff"/>
+  <path d="M168 330 L148 414 L250 330 Z" fill="#ffffff" stroke="#ffffff" stroke-width="8" stroke-linejoin="round"/>
+  <!-- Star (a rating) -->
+  <polygon points="256,144 277.2,198.9 335.9,202 290.2,239.1 305.4,296 256,264 206.6,296 221.8,239.1 176.1,202 234.8,198.9"
+           fill="#f5b301" stroke="#f5b301" stroke-width="16" stroke-linejoin="round"/>
+</svg>
