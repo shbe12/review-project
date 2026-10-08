@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      {% if title %}
+      Review - {{ title }}
+      {% else %}
+      Review
+      {% endif %}
+    </title>
+  </head>
+  <body>
+    {% block content %}
+    {% endblock content %}
+  </body>
+</html>
