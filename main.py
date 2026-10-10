@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from schemas import ReviewCreate, ReviewResponse
 
 app = FastAPI()
 
@@ -58,11 +59,30 @@ def review_page(request: Request, review_id: int):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Review not found")
 
 
-@app.get("/api/reviews")
+@app.get("/api/reviews", response_model=list[ReviewResponse])
 def get_reviews():
     return reviews
 
-@app.get("/api/reviews/{review_id}")
+@app.post(
+        "/api/reviews",
+          response_model=ReviewResponse,
+          status_code=status.HTTP_201_CREATED,
+)
+def create_review(review: ReviewCreate):
+    new_review = max(p["id"] for p in reviews) + 1 if reviews else 1
+    new_review = {
+        "id": new_review,
+        "name": review.name,
+        "rating": review.rating,
+        "activity": review.activity,
+        "comment": review.comment,
+        "date_reviewed": "April 22, 2025",
+    }
+    reviews.append(new_review)
+    return new_review
+
+
+@app.get("/api/reviews/{review_id}", response_model=ReviewResponse)
 def get_review(review_id: int):
     for review in reviews:
         if review.get("id") == review_id:
