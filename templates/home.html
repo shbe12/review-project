@@ -5,7 +5,7 @@
             <article class="content-section py-3 px-4 mb-4">
                 <div class="d-flex align-items-start gap-4">
                     <img class="rounded-circle article-img flex-shrink-0"
-                         src="{{ url_for('static', path='icons/icon.png') }}"
+                         src="{{ url_for('static', path='images/default_profile.jpg') }}"
                          alt="{{ review.name.username }}'s profile picture"
                          width="64"
                          height="64"
@@ -18,7 +18,7 @@
                         </div>
                         <h2>
                             <a class="article-title"
-                               href="#">{{ review.activity }}</a>
+                               href="{{ url_for("review_page", review_id=review.id) }}">{{ review.activity }}</a>
                         </h2>
                         <p class="article-content">{{ review.comment }}</p>
                     </div>
