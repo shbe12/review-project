@@ -3,16 +3,16 @@
     <article class="content-section py-3 px-4 mb-4">
         <div class="d-flex align-items-start gap-4">
             <img class="rounded-circle article-img flex-shrink-0"
-                 src="{{ url_for('static', path='profile_pictures/default.jpg') }}"
-                 alt="{{ review.name }}'s profile picture"
+                 src="{{ review.name.image_path }}"
+                 alt="{{ review.name.username }}'s profile picture"
                  width="64"
                  height="64"
                  loading="lazy">
             <div class="flex-grow-1">
                 <div class="article-metadata mb-2">
                     <a class="me-2"
-                       href="#">{{ review.name }}</a>
-                    <small class="text-body-secondary">{{ review.date_reviewed }}</small>
+                       href="#">{{ review.name.username }}</a>
+                    <small class="text-body-secondary">{{ review.date_reviewed.strftime('%B %d, %Y') }}</small>
                 </div>
                 <h2 class="article-title">{{ review.activity }}</h2>
                 <p class="article-content">{{ review.comment }}</p>

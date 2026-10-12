@@ -49,12 +49,12 @@ def review_page(request: Request, review_id: int, db: Annotated[Session, Depends
        return templates.TemplateResponse(
             request,
                     "review.html",
-                    {"review": review, "title": activity},
+                    {"review": review, "title": title},
                     )
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Review not found")
 
 
-app.get("/users/{user_id}/reviews", include_in_schema=False, name="user_reviews")
+@app.get("/users/{user_id}/reviews", include_in_schema=False, name="user_reviews")
 def user_reviews_page(
     request: Request,
     user_id: int,
@@ -85,8 +85,8 @@ def user_reviews_page(
 def create_user(user: UserCreate, db: Annotated[Session, Depends(get_db)]):
     result = db.execute(
         select(models.User).where(models.User.username == user.username)),
-    )
-    existing_user = result.scalars.first()
+
+    existing_user = result.scalars().first()
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -95,8 +95,8 @@ def create_user(user: UserCreate, db: Annotated[Session, Depends(get_db)]):
 
     result = db.execute(
         select(models.User).where(models.User.email == user.email)),
-    )
-    existing_email = result.scalars.first()
+
+    existing_email = result.scalars().first()
     if existing_email:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -116,8 +116,8 @@ def create_user(user: UserCreate, db: Annotated[Session, Depends(get_db)]):
 def get_user(user_id: int, db: Annotated[Session, Depends(get_db)]):
     result = db.execute(
         select(models.User).where(models.User.id == user_id)),
-    )
-    user = result.scalars.first()
+
+    user = result.scalars().first()
 
     if user:
         return user

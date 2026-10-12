@@ -5,7 +5,7 @@
             <article class="content-section py-3 px-4 mb-4">
                 <div class="d-flex align-items-start gap-4">
                     <img class="rounded-circle article-img flex-shrink-0"
-                         src="{{ url_for('static', path='images/default_profile.jpg') }}"
+                         src="{{ review.name.image_path }}"
                          alt="{{ review.name.username }}'s profile picture"
                          width="64"
                          height="64"
@@ -13,8 +13,8 @@
                     <div class="flex-grow-1">
                         <div class="article-metadata mb-2">
                             <a class="me-2"
-                               href="#">{{ review.name}}</a>
-                            <small class="text-body-secondary">{{ review.date_reviewed }}</small>
+                               href="{{ url_for("user_reviews_page", user_id=review.name.id) }}">{{ review.name.username }}</a>
+                            <small class="text-body-secondary">{{ review.date_reviewed.strftime('%B %d, %Y') }}</small>
                         </div>
                         <h2>
                             <a class="article-title"
