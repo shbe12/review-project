@@ -1,17 +1,36 @@
-from pydantic import BaseModel, ConfigDict, Field
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict,EmailStr, Field
+
+
+
+class UserBase(BaseModel):
+    username: str = Field(min_length=1, max_length=50)
+    email: EmailStr = Field(max_length=120)
+
+
+class UserCreate(UserBase):
+    pass
+
+class UserResponse(UserBase):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    image_file: str | None
+    image_path: str
+
 
 class ReviewBase(BaseModel):
     activity: str = Field(min_length=1, max_length=100)
     comment:  str = Field(min_length=1, max_length=500)
-    name: str = Field(min_length=1, max_length=100)
     rating: int = Field(ge=1, le=5)
 
 
 class ReviewCreate(ReviewBase):
-    pass
+    user_id: int #TEMPORARY: This will be replaced with the current user ID from the session
 
 
 class ReviewResponse(ReviewBase):
     model_config = ConfigDict(from_attributes=True)
     id: int
-    date_reviewed: str
+    user_id: int
+    date_reviewed: datetime
+    name: UserResponse
