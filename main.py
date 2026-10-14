@@ -84,7 +84,7 @@ def user_reviews_page(
 
 def create_user(user: UserCreate, db: Annotated[Session, Depends(get_db)]):
     result = db.execute(
-        select(models.User).where(models.User.username == user.username)),
+        select(models.User).where(models.User.username == user.username))
 
     existing_user = result.scalars().first()
     if existing_user:
@@ -94,7 +94,7 @@ def create_user(user: UserCreate, db: Annotated[Session, Depends(get_db)]):
         )
 
     result = db.execute(
-        select(models.User).where(models.User.email == user.email)),
+        select(models.User).where(models.User.email == user.email))
 
     existing_email = result.scalars().first()
     if existing_email:
@@ -115,7 +115,7 @@ def create_user(user: UserCreate, db: Annotated[Session, Depends(get_db)]):
 @app.get("/api/users/{user_id}", response_model=UserResponse)
 def get_user(user_id: int, db: Annotated[Session, Depends(get_db)]):
     result = db.execute(
-        select(models.User).where(models.User.id == user_id)),
+        select(models.User).where(models.User.id == user_id))
 
     user = result.scalars().first()
 
