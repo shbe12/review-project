@@ -11,8 +11,8 @@
             <div class="flex-grow-1">
                 <div class="article-metadata mb-2">
                     <a class="me-2"
-                       href="#">{{ review.name.username }}</a>
-                    <small class="text-body-secondary">{{ review.date_reviewed.strftime('%B %d, %Y') }}</small>
+                        href="{{ url_for("user_reviews", user_id=review.name.id) }}">{{ review.name.username }}</a>
+                            <small class="text-body-secondary">{{ review.date_reviewed.strftime('%B %d, %Y') }}</small>
                 </div>
                 <h2 class="article-title">{{ review.activity }}</h2>
                 <p class="article-content">{{ review.comment }}</p>
