@@ -198,6 +198,19 @@ def update_user(
     return user
 
 
+@app.delete("/api/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_user(user_id: int, db: Annotated[Session, Depends(get_db)]):
+    result = db.execute(select(models.User).where(models.User.id == user_id))
+    user = result.scalars().first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    db.delete(user)
+    db.commit()
+
+
 @app.get("/api/reviews", response_model=list[ReviewResponse])
 def get_reviews(db: Annotated[Session, Depends(get_db)]):
     result = db.execute(select(models.Review))

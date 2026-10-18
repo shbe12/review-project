@@ -20,7 +20,10 @@ class User(Base):
         default=None,
     )
 
-    reviews: Mapped[list[Review]] = relationship(back_populates="name")
+    reviews: Mapped[list[Review]] = relationship(
+        back_populates="name",
+        cascade="all, delete-orphan"
+    )
 
     @property
     def image_path(self) -> str:
