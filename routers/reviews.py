@@ -14,7 +14,9 @@ router = APIRouter()
 @router.get("", response_model=list[ReviewResponse])
 async def get_reviews(db: Annotated[AsyncSession, Depends(get_db)]):
     result = await db.execute(
-        select(models.Review).options(selectinload(models.Review.name)),
+        select(models.Review)
+        .options(selectinload(models.Review.name))
+        .order_by(models.Review.date_reviewed.desc())
     )
     reviews = result.scalars().all()
     return reviews

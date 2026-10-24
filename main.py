@@ -41,7 +41,9 @@ app.include_router(reviews.router, prefix="/api/reviews", tags=["Reviews"])
 @app.get("/reviews", include_in_schema=False, name="reviews")
 async def home(request: Request,db: Annotated[AsyncSession, Depends(get_db)]):
     result = await db.execute(
-        select(models.Review).options(selectinload(models.Review.name))
+        select(models.Review)
+        .options(selectinload(models.Review.name))
+        .order_by(models.Review.date_reviewed.desc()),
     )
     reviews = result.scalars().all()
     return templates.TemplateResponse(
@@ -87,7 +89,10 @@ async def user_reviews_page(
     result = await db.execute(
         select(models.Review)
         .options(selectinload(models.Review.name))
-        .where(models.Review.user_id == user_id))
+        .where(models.Review.user_id == user_id)
+        .order_by(models.Review.date_reviewed.desc()),
+    )
+
     reviews = result.scalars().all()
     return templates.TemplateResponse(
         request,

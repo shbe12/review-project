@@ -76,7 +76,9 @@ async def get_user_reviews(user_id: int, db: Annotated[AsyncSession, Depends(get
     result = await db.execute(
         select(models.Review)
         .options(selectinload(models.Review.name))
-        .where(models.Review.user_id == user_id))
+        .where(models.Review.user_id == user_id)
+        .order_by(models.Review.date_reviewed.desc()),
+    )
     reviews = result.scalars().all()
     return reviews
 
