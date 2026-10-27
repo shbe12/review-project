@@ -14,18 +14,20 @@
                         href="{{ url_for("user_reviews", user_id=review.name.id) }}">{{ review.name.username }}</a>
                             <small class="text-body-secondary">{{ review.date_reviewed.strftime('%B %d, %Y') }}</small>
                 </div>
-                <h2 class="article-title">{{ review.activity }}</h2>
-                <p class="article-content">{{ review.comment }}</p>
-                <div id="postActions" class="post-actions mt-3 pt-3 border-top d-none">
-                    <button type="button"
-                            class="btn btn-outline-secondary me-1"
-                            data-bs-toggle="modal"
-                            data-bs-target="#editModal">Edit Review</button>
-                    <button type="button"
-                            class="btn btn-outline-danger"
-                            data-bs-toggle="modal"
-                            data-bs-target="#deleteModal">Delete Review</button>
-                </div>
+                {% if review.user_id == 1 %}
+                  <h2 class="article-title">{{ review.activity }}</h2>
+                  <p class="article-content">{{ review.comment }}</p>
+                  <div class="post-actions mt-3 pt-3 border-top">
+                      <button type="button"
+                              class="btn btn-outline-secondary me-1"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editModal">Edit Review</button>
+                      <button type="button"
+                              class="btn btn-outline-danger"
+                              data-bs-toggle="modal"
+                              data-bs-target="#deleteModal">Delete Review</button>
+                  </div>
+                {% endif %}
             </div>
         </div>
     </article>
