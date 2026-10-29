@@ -14,9 +14,8 @@
                         href="{{ url_for("user_reviews", user_id=review.name.id) }}">{{ review.name.username }}</a>
                             <small class="text-body-secondary">{{ review.date_reviewed.strftime('%B %d, %Y') }}</small>
                 </div>
+                <!-- only show edit and delete buttons if the current user id is 1 for now -->
                 {% if review.user_id == 1 %}
-                  <h2 class="article-title">{{ review.activity }}</h2>
-                  <p class="article-content">{{ review.comment }}</p>
                   <div class="post-actions mt-3 pt-3 border-top">
                       <button type="button"
                               class="btn btn-outline-secondary me-1"
@@ -107,8 +106,7 @@
 {% endblock content %}
 {% block scripts %}
     <script type="module">
-    import { getCurrentUser, getToken } from '/static/js/auth.js';
-    import { getErrorMessage, showModal, hideModal } from '/static/js/utils.js';
+
 
     const reviewId = {{ review.id }};
     const reviewUserId = {{ review.user_id }};
