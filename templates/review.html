@@ -30,7 +30,7 @@
             </div>
         </div>
     </article>
-    <!-- Edit Post Modal -->
+    <!-- Edit Review Modal -->
     <div class="modal fade"
          id="editModal"
          tabindex="-1"
@@ -64,6 +64,17 @@
                                       name="comment"
                                       rows="5"
                                       required>{{ review.comment }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editRating" class="form-label">Rating</label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="editRating"
+                                   name="rating"
+                                   value="{{ review.rating }}"
+                                   min="1"
+                                   max="5"
+                                   required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -106,29 +117,27 @@
 {% endblock content %}
 {% block scripts %}
     <script type="module">
+    import {
+      getErrorMessage,
+      hideModal,
+      showModal,
+    } from "/static/js/utils.js";
 
-
+    // Get review ID from Jinja2 template
     const reviewId = {{ review.id }};
-    const reviewUserId = {{ review.user_id }};
 
-    // Show edit/delete buttons only if current user owns this post
-    async function checkOwnership() {
-        const user = await getCurrentUser();
-        if (user && user.id === reviewUserId) {
-            document.getElementById('postActions').classList.remove('d-none');
-        }
-    }
-
-    // Edit Post Form Handler
+    // Edit Review Form Handler
     const editForm = document.getElementById('editPostForm');
     editForm.addEventListener('submit', async (event) => {
+      // Stop default form submission to handle it with JavaScript
         event.preventDefault();
 
-        const token = getToken();
-        if (!token) { window.location.href = '/login'; return; }
+        // Gather form values into plain object
 
         const formData = new FormData(editForm);
         const postData = Object.fromEntries(formData.entries());
+
+        // remove review_id from data
         delete postData.post_id;
 
         try {
@@ -136,19 +145,10 @@
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(postData),
             });
 
-            if (response.status === 401) { window.location.href = '/login'; return; }
-            if (response.status === 403) {
-                document.getElementById('errorMessage').textContent =
-                    'You are not authorized to edit this review.';
-                hideModal('editModal');
-                showModal('errorModal');
-                return;
-            }
 
             if (response.ok) {
                 document.getElementById('successMessage').textContent =
@@ -172,26 +172,17 @@
         }
     });
 
-    // Delete Post Handler
+    // Delete Review Handler
     const deleteButton = document.getElementById('confirmDelete');
     deleteButton.addEventListener('click', async () => {
-        const token = getToken();
-        if (!token) { window.location.href = '/login'; return; }
+      //  delete request - no body needed, just the review ID in the URL
 
         try {
-            const response = await fetch(`/api/posts/${postId}`, {
+            const response = await fetch(`/api/reviews/${reviewId}`, {
                 method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${token}` },
-            });
 
-            if (response.status === 401) { window.location.href = '/login'; return; }
-            if (response.status === 403) {
-                document.getElementById('errorMessage').textContent =
-                    'You are not authorized to delete this review.';
-                hideModal('deleteModal');
-                showModal('errorModal');
-                return;
-            }
+            });
+            // No content response means successful deletion, redirect to home page
 
             if (response.status === 204) {
                 window.location.href = '/';
@@ -208,6 +199,6 @@
         }
     });
 
-    checkOwnership();
+
     </script>
 {% endblock scripts %}
